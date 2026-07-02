@@ -1,0 +1,38 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "DAP-Link Debug",
+            "type": "cortex-debug",
+            "request": "launch",
+            "servertype": "openocd",
+            "executable": "${workspaceFolder}/build/lane_board.elf",
+            "configFiles": [
+                "interface/cmsis-dap.cfg",
+                "target/stm32f1x.cfg"
+            ],
+            "svdFile": "${workspaceFolder}/.vscode/STM32F103.svd",
+            "runToEntryPoint": "main",
+            "device": "STM32F103C8",
+            "preLaunchTask": "CMake: Build",
+            "postLaunchCommands": [
+                "monitor reset halt"
+            ],
+            "showDevDebugOutput": "raw"
+        },
+        {
+            "name": "DAP-Link Attach",
+            "type": "cortex-debug",
+            "request": "attach",
+            "servertype": "openocd",
+            "executable": "${workspaceFolder}/build/lane_board.elf",
+            "configFiles": [
+                "interface/cmsis-dap.cfg",
+                "target/stm32f1x.cfg"
+            ],
+            "svdFile": "${workspaceFolder}/.vscode/STM32F103.svd",
+            "device": "STM32F103C8",
+            "runToEntryPoint": false
+        }
+    ]
+}

@@ -1,0 +1,24 @@
+{
+    "cmake.buildDirectory": "${workspaceFolder}/build",
+    "cmake.generator": "Ninja",
+    "cmake.configureOnOpen": true,
+    "cmake.configureSettings": {
+        "CMAKE_TOOLCHAIN_FILE": "${workspaceFolder}/cmake/gcc-arm-none-eabi.cmake"
+    },
+    "clangd.path": "clangd",
+    "clangd.arguments": [
+        "--compile-commands-dir=${workspaceFolder}/build",
+        "--header-insertion=never",
+        "--clang-tidy=false"
+    ],
+    "C_Cpp.intelliSenseEngine": "disabled",
+    "cortex-debug.armToolchainPath": "C:/Users/JY-YF/AppData/Local/Programs/xpack-arm-none-eabi-gcc-15.2.1-1.1/bin",
+    "cortex-debug.openocdPath": "openocd",
+    "files.associations": {
+        "*.h": "c",
+        "*.c": "c",
+        "*.ld": "linker-script"
+    },
+    "files.encoding": "utf8",
+    "files.eol": "\n"
+}
