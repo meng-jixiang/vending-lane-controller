@@ -1,47 +1,51 @@
 # ============================================================
-# vending-lane-controller 自定义源码注册
+# 分层架构源码注册
 # ============================================================
-# CubeMX 生成代码后，在 CMakeLists.txt 中添加:
-#   include(custom_sources.cmake)
+# bsp/      — 板级硬件封装 (唯一操作 HAL 的层)
+# device/   — 设备驱动 (调用 bsp 接口)
+# service/  — 通用服务 (协议/存储, 不碰硬件)
+# app/      — 业务逻辑 (出货流程)
 # ============================================================
 
-# --- App 层：应用逻辑 ---
-set(APP_SOURCES
-    ${CMAKE_SOURCE_DIR}/App/motor_ctrl.c
-    ${CMAKE_SOURCE_DIR}/App/protocol.c
-    ${CMAKE_SOURCE_DIR}/App/laser_ctrl.c
-    ${CMAKE_SOURCE_DIR}/App/param_store.c
+# --- BSP 层 ---
+set(BSP_SOURCES
+    ${CMAKE_SOURCE_DIR}/bsp/bsp_led.c
+    ${CMAKE_SOURCE_DIR}/bsp/bsp_uart.c
+    ${CMAKE_SOURCE_DIR}/bsp/bsp_595.c
+    ${CMAKE_SOURCE_DIR}/bsp/bsp_gpio.c
+    ${CMAKE_SOURCE_DIR}/bsp/bsp_adc.c
 )
+set(BSP_INCLUDES ${CMAKE_SOURCE_DIR}/bsp)
 
-set(APP_INCLUDES
-    ${CMAKE_SOURCE_DIR}/App
-)
+# --- Device 层 (预留) ---
+set(DEV_SOURCES "")
+set(DEV_INCLUDES "")
 
-# --- 自定义硬件驱动层 ---
-set(DRV_SOURCES
-    ${CMAKE_SOURCE_DIR}/Drivers_custom/hc595.c
-    ${CMAKE_SOURCE_DIR}/Drivers_custom/adc_sense.c
-    ${CMAKE_SOURCE_DIR}/Drivers_custom/rs485.c
-    ${CMAKE_SOURCE_DIR}/Drivers_custom/gpio_ext.c
+# --- Service 层 ---
+set(SVC_SOURCES
+    ${CMAKE_SOURCE_DIR}/service/protocol.c
+    ${CMAKE_SOURCE_DIR}/service/param_store.c
 )
+set(SVC_INCLUDES ${CMAKE_SOURCE_DIR}/service)
 
-set(DRV_INCLUDES
-    ${CMAKE_SOURCE_DIR}/Drivers_custom
-)
+# --- App 层 (预留) ---
+set(APP_SOURCES "")
+set(APP_INCLUDES "")
 
 # --- Config ---
-set(CONFIG_INCLUDES
-    ${CMAKE_SOURCE_DIR}/Config
-)
+set(CONFIG_INCLUDES ${CMAKE_SOURCE_DIR}/Config)
 
 # --- 汇总 ---
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
+    ${BSP_SOURCES}
+    ${DEV_SOURCES}
+    ${SVC_SOURCES}
     ${APP_SOURCES}
-    ${DRV_SOURCES}
 )
-
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
+    ${BSP_INCLUDES}
+    ${DEV_INCLUDES}
+    ${SVC_INCLUDES}
     ${APP_INCLUDES}
-    ${DRV_INCLUDES}
     ${CONFIG_INCLUDES}
 )
