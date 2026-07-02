@@ -17,20 +17,26 @@ set(BSP_SOURCES
 )
 set(BSP_INCLUDES ${CMAKE_SOURCE_DIR}/bsp)
 
-# --- Device 层 (预留) ---
-set(DEV_SOURCES "")
-set(DEV_INCLUDES "")
+# --- Device 层 ---
+set(DEV_SOURCES
+    ${CMAKE_SOURCE_DIR}/device/motor.c
+    ${CMAKE_SOURCE_DIR}/device/laser.c
+)
+set(DEV_INCLUDES ${CMAKE_SOURCE_DIR}/device)
 
 # --- Service 层 ---
 set(SVC_SOURCES
     ${CMAKE_SOURCE_DIR}/service/protocol.c
     ${CMAKE_SOURCE_DIR}/service/param_store.c
+    ${CMAKE_SOURCE_DIR}/service/fault_log.c
 )
 set(SVC_INCLUDES ${CMAKE_SOURCE_DIR}/service)
 
-# --- App 层 (预留) ---
-set(APP_SOURCES "")
-set(APP_INCLUDES "")
+# --- App 层 ---
+set(APP_SOURCES
+    ${CMAKE_SOURCE_DIR}/app/vending.c
+)
+set(APP_INCLUDES ${CMAKE_SOURCE_DIR}/app)
 
 # --- Config ---
 set(CONFIG_INCLUDES ${CMAKE_SOURCE_DIR}/Config)

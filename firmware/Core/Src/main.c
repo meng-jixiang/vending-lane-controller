@@ -19,6 +19,7 @@
 #include "bsp_adc.h"
 #include "param_store.h"
 #include "protocol.h"
+#include "vending.h"
 /* USER CODE END Includes */
 
 /* USER CODE BEGIN PV */
@@ -60,6 +61,9 @@ int main(void)
     Param_Init();
     Proto_Init();
 
+    /* App 层初始化 */
+    Vending_Init();
+
     /* 启动确认：LED 闪烁从机地址次数 */
     BSP_LED_Blink(Param_GetAddr(), 200);
     /* USER CODE END 2 */
@@ -69,6 +73,7 @@ int main(void)
     {
         /* USER CODE BEGIN 3 */
         Proto_Process();            /* 协议处理 (service 层) */
+        Vending_Process();          /* 出货主流程 (app 层) */
         HAL_IWDG_Refresh(&hiwdg);
         /* USER CODE END 3 */
     }
