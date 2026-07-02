@@ -26,7 +26,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "param_store.h"
+#include "protocol.h"
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -97,7 +99,11 @@ int main(void)
   MX_ADC2_Init();
   MX_IWDG_Init();
   /* USER CODE BEGIN 2 */
+  Param_Init();     /* 从 Flash 加载参数（含从机地址） */
+  Proto_Init();     /* 启动 RS-485 协议接收 */
 
+  /* LED 闪烁从机地址次数，确认启动 */
+  Proto_LedBlink(Param_GetAddr(), 200);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -107,6 +113,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    Proto_Process();        /* 处理收到的协议帧 */
+    HAL_IWDG_Refresh(&hiwdg);  /* 喂看门狗 */
   }
   /* USER CODE END 3 */
 }
@@ -159,6 +167,17 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+/**
+ * @brief UART 接收完成回调
+ * @note  将 USART3 收到的字节喂入协议模块
+ */
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
+{
+  if (huart->Instance == USART3) {
+    Proto_RxByte(huart->pRxBuffPtr[0]);
+  }
+}
 
 /* USER CODE END 4 */
 
